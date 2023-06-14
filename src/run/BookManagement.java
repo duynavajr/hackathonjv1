@@ -1,202 +1,191 @@
 package run;
 
 import ra.bussiness.Book;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class BookManagement {
-    private static List<Book> library = new ArrayList<>();
+    private static ArrayList<Book> books = new ArrayList<>();
     private static Scanner scanner = new Scanner(System.in);
+
 
     public static void main(String[] args) {
         int choice;
         do {
             displayMenu();
-            System.out.print("Nhập lựa chọn của bạn: ");
             choice = scanner.nextInt();
-            scanner.nextLine(); // Đọc bỏ dòng new line sau khi đọc số nguyên
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
                     addBooks();
                     break;
                 case 2:
-                    displayAllBooks();
+                    displayBooks();
                     break;
                 case 3:
-                    sortBooks();
+                    sortBooksByInterest();
                     break;
                 case 4:
-                    removeBookById();
+                    deleteBook();
                     break;
                 case 5:
                     searchBooks();
                     break;
                 case 6:
-                    updateBookById();
+                    updateBook();
                     break;
                 case 7:
-                    System.out.println("Cảm ơn bạn đã sử dụng chương trình!");
+                    System.out.println("\033[1;31m Chương trình đã kết thúc. \033[0m");
                     break;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
-                    break;
+                    System.out.println("\033[1;31m Lựa chọn không hợp lệ, vui lòng chọn lại. \033[0m");
             }
         } while (choice != 7);
     }
 
+
     private static void displayMenu() {
-        System.out.println("****************JAVA-HACKATHON-05-BASIC-MENU***************");
-        System.out.println("1. Nhập số lượng sách thêm mới và nhập thông tin cho từng cuốn sách");
-        System.out.println("2. Hiển thị thông tin tất cả sách trong thư viện");
-        System.out.println("3. Sắp xếp sách theo lợi nhuận tăng dần");
-        System.out.println("4. Xóa sách theo mã sách");
-        System.out.println("5. Tìm kiếm tương đối sách theo tên sách hoặc mô tả");
-        System.out.println("6. Thay đổi thông tin sách theo mã sách");
-        System.out.println("7. Thoát");
+        System.out.println("\033[1;34m ****************JAVA-HACKATHON-05-BASIC-MENU*************** \033[0m");
+        System.out.println("\033[1;34m1. Nhập số lượng Sách thêm mới và nhập thông tin cho từng cuốn Sách. ");
+        System.out.println("2. Hiển thị thông tin tất cả Sách trong thư viện.");
+        System.out.println("3. Sắp xếp Sách theo lợi nhuận tăng dần. ");
+        System.out.println("4. Xóa Sách theo mã Sách. ");
+        System.out.println("5. Tìm kiếm tương đối Sách theo tên Sách hoặc mô tả. ");
+        System.out.println("6. Thay đổi thông tin Sách theo mã Sách. ");
+        System.out.println("7. Thoát !");
+        System.out.print("Nhập lựa chọn của bạn : \033[0m");
     }
+
+
 
     private static void addBooks() {
-        System.out.print("Nhập số lượng sách muốn thêm: ");
-        int numBooks = scanner.nextInt();
+        System.out.print("\033[1;34m Nhập số sách cần thêm: \033[0m");
+        int count = scanner.nextInt();
         scanner.nextLine();
 
-        for (int i = 0; i < numBooks; i++) {
-            System.out.println("Nhập thông tin cho cuốn sách thứ " + (i + 1));
+        for (int i = 0; i < count; i++) {
+            System.out.println("\033[1;34m Nhập thông tin sách thứ " + (i + 1) + ":\033[0m");
             Book book = new Book();
             book.inputData();
-            library.add(book);
+            books.add(book);
+            System.out.println("\033[1;34m Sách đã được thêm thành công.\033[0m");
         }
-        System.out.println("Thêm sách thành công!");
     }
 
-    private static void displayAllBooks() {
-        if (library.isEmpty()) {
-            System.out.println("Thư viện không có sách nào.");
+
+    private static void displayBooks() {
+        if (books.isEmpty()) {
+            System.out.println("\033[1;31m Danh sách Sách trống. \033[0m");
         } else {
-            System.out.println("Danh sách tất cả sách trong thư viện:");
-            for (Book book : library) {
+            System.out.println("\033[1;34m Danh sách Sách trong thư viện:\033[0m");
+            for (Book book : books) {
                 book.displayData();
                 System.out.println();
             }
         }
     }
 
-    private static void sortBooks() {
-        if (library.isEmpty()) {
-            System.out.println("Thư viện không có sách nào.");
+
+    private static void sortBooksByInterest() {
+        if (books.isEmpty()) {
+            System.out.println("\033[1;31m Danh Sách sách trống. \033[0m");
         } else {
-            Collections.sort(library, (book1, book2) -> Float.compare(book1.getInterest(), book2.getInterest()));
-            System.out.println("Sắp xếp sách theo lợi nhuận tăng dần:");
-            for (Book book : library) {
+            Collections.sort(books, Comparator.comparingDouble(Book::getInterest));
+
+            System.out.println("\033[1;34m Danh Sách sách đã được sắp xếp theo lợi nhuận tăng dần:\033[0m");
+            for (Book book : books) {
                 book.displayData();
                 System.out.println();
             }
         }
     }
 
-    private static void removeBookById() {
-        if (library.isEmpty()) {
-            System.out.println("Thư viện không có sách nào.");
+
+    private static void deleteBook() {
+        if (books.isEmpty()) {
+            System.out.println("\033[1;31m Danh sách Sách trống. \033[0m");
         } else {
-            System.out.print("Nhập mã sách muốn xóa: ");
+            System.out.print("\033[1;34m Nhập mã Sách cần xóa: \033[0m");
             int bookId = scanner.nextInt();
             scanner.nextLine();
 
-            Iterator<Book> iterator = library.iterator();
-            boolean bookFound = false;
-            while (iterator.hasNext()) {
-                Book book = iterator.next();
+            boolean isDeleted = false;
+            for (Book book : books) {
                 if (book.getBookId() == bookId) {
-                    iterator.remove();
-                    bookFound = true;
+                    books.remove(book);
+                    isDeleted = true;
+                    System.out.println("\033[1;34m Sách có mã " + bookId + " đã được xóa. \033[0m");
                     break;
                 }
             }
 
-            if (bookFound) {
-                System.out.println("Xóa sách thành công!");
-            } else {
-                System.out.println("Không tìm thấy sách với mã sách đã nhập.");
+            if (!isDeleted) {
+                System.out.println("\033[1;31m Không tìm thấy Sách có mã " + bookId + ". \033[0m");
             }
         }
     }
+
 
     private static void searchBooks() {
-        if (library.isEmpty()) {
-            System.out.println("Thư viện không có sách nào.");
+        if (books.isEmpty()) {
+            System.out.println("\033[1;31m Danh sách Sách trống. \033[0m");
         } else {
-            System.out.println("1. Tìm kiếm theo tên sách");
-            System.out.println("2. Tìm kiếm theo mô tả");
+            System.out.print("\033[1;34m Nhập chuỗi tìm kiếm: \033[0m");
+            String searchString = scanner.nextLine();
 
-            System.out.print("Nhập lựa chọn của bạn: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            System.out.print("Nhập từ khóa tìm kiếm: ");
-            String keyword = scanner.nextLine();
-
-            boolean bookFound = false;
-
-            switch (choice) {
-                case 1:
-                    System.out.println("Kết quả tìm kiếm theo tên sách:");
-                    for (Book book : library) {
-                        if (book.getBookName().contains(keyword)) {
-                            book.displayData();
-                            System.out.println();
-                            bookFound = true;
-                        }
-                    }
-                    break;
-                case 2:
-                    System.out.println("Kết quả tìm kiếm theo mô tả:");
-                    for (Book book : library) {
-                        if (book.getDescriptions().contains(keyword)) {
-                            book.displayData();
-                            System.out.println();
-                            bookFound = true;
-                        }
-                    }
-                    break;
-                default:
-                    System.out.println("Lựa chọn không hợp lệ.");
-                    break;
+            ArrayList<Book> matchedBooks = new ArrayList<>();
+            for (Book book : books) {
+                if (validateSearchString(searchString) &&
+                        (book.getBookName().contains(searchString) ||
+                                book.getDescriptions().contains(searchString))) {
+                    matchedBooks.add(book);
+                }
             }
 
-            if (!bookFound) {
-                System.out.println("Không tìm thấy sách phù hợp với từ khóa đã nhập.");
+            if (matchedBooks.isEmpty()) {
+                System.out.println("\033[1;31m Không tìm thấy Sách phù hợp với chuỗi tìm kiếm. \033[0m");
+            } else {
+                System.out.println("\033[1;34m Danh sách Sách phù hợp với chuỗi tìm kiếm: \033[0m");
+                for (Book book : matchedBooks) {
+                    book.displayData();
+                    System.out.println();
+                }
             }
         }
     }
 
-    private static void updateBookById() {
-        if (library.isEmpty()) {
-            System.out.println("Thư viện không có sách nào.");
+
+    private static void updateBook() {
+        if (books.isEmpty()) {
+            System.out.println("\033[1;31m Danh sách Sách trống. \033[0m");
         } else {
-            System.out.print("Nhập mã sách muốn thay đổi thông tin: ");
+            System.out.print("\033[1;34m Nhập mã Sách cần cập nhật: \033[0m");
             int bookId = scanner.nextInt();
             scanner.nextLine();
 
-            boolean bookFound = false;
-
-            for (Book book : library) {
+            boolean isUpdated = false;
+            for (Book book : books) {
                 if (book.getBookId() == bookId) {
-                    System.out.println("Nhập thông tin mới cho sách:");
+                    System.out.println("\033[1;34m Nhập thông tin mới cho Sách có mã " + bookId + ": \033[0m");
                     book.inputData();
-                    bookFound = true;
+                    isUpdated = true;
+                    System.out.println("\033[1;34m Thông tin Sách đã được cập nhật. \033[0m");
                     break;
                 }
             }
 
-            if (bookFound) {
-                System.out.println("Cập nhật thông tin sách thành công!");
-            } else {
-                System.out.println("Không tìm thấy sách với mã sách đã nhập.");
+            if (!isUpdated) {
+                System.out.println("\033[1;31m Không tìm thấy Sách có mã " + bookId + ". \033[0m");
             }
         }
+    }
+
+
+    private static boolean validateSearchString(String searchString) {
+        return searchString.length() >= 3;
     }
 }
